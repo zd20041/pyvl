@@ -26,10 +26,11 @@ def dowpython(name,list):
       pydowurl = i['dow_url'] # 下载地址
       print(f'\n开始从 {pydowurl} 下载 {pyname}')
       #下载文件，并传入文件名
-      download(pydowurl, f"c:\\pylv\\python_tmp{pyname}.zip")
+      download(pydowurl, f"c:\\pylv\\python_tmp\\{pyname}.zip")
       # 解压到 Python文件夹内
-      zip_file(f"c:\\pylv\\python_tmp{pyname}.zip", 'c:\\pylv\\python_vList\\' + pyname)
+      zip_file(f"{tmp_path}\\{pyname}.zip", f'{python_path}\\{pyname}')
       # 复制一份python.exe 重命名为 此版本的名
+      
       input('安装完成 按任意键继续...')
 
 
@@ -67,7 +68,7 @@ def delpython(localpythonlist, python_index):
   reok = input('\nY/N: ')
   if reok == 'Y' or reok == 'y':
     # 删除本地文件夹
-    shutil.rmtree("c:\\pylv\\python_vList\\" + python_name)
+    shutil.rmtree(f"{python_path}\\{python_name}")
     input('删除成功 按任意键继续...')
   elif reok == 'N' or reok == 'n':
     print('下次别在手滑了哦~')
@@ -76,7 +77,7 @@ def delpython(localpythonlist, python_index):
 
 # 获取本地已经安装的python列表
 def localpython():
-  list = os.listdir('c:\\pylv\\\python_vList\\')
+  list = os.listdir(f'{python_path}\\')
   return list
 
 # 初始化函数
@@ -88,19 +89,25 @@ def initpylv():
   3、os.mkdir(path) 创建目录
   """
   # 写入最新版本json
-
-  if os.path.exists('c:\pylv\python_vList') and os.path.exists('c:\pylv\python_tmp'):
+  if os.path.exists(f'{python_path}') and os.path.exists(f'{tmp_path}'):
     return
   else:
     try:
-      os.makedirs('c:\pylv\python_vList')
+      os.makedirs(f'{python_path}')
     except FileExistsError as e:
       print(e)
     try:
-      os.makedirs('c:\pylv\python_tmp')
+      os.makedirs(f'{tmp_path}')
     except FileExistsError as e:
       print(e)    
+      
 if __name__ == '__main__':
+  # 一些变量
+  # tmp_path
+  # python_path
+  tmp_path = 'c:\\pylv\\python_tmp' # 缓存path
+  python_path = 'c:\\pylv\\python_vList' # Python安装位置
+  # 一些变量
   initpylv()
   while 1:
     os.system('cls')
